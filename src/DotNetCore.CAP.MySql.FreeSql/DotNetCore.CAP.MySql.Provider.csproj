@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.1</TargetFrameworks>
+    <AssemblyName>DotNetCore.CAP.MySql.FreeSql</AssemblyName>
+    <PackageTags>$(PackageTags);MySQL</PackageTags>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <DocumentationFile>bin\$(Configuration)\netstandard2.0\DotNetCore.CAP.MySql.FreeSql.xml</DocumentationFile>
+    <NoWarn>1701;1702;1705;CS1591</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.0.30" />
+    <PackageReference Include="DotNetCore.CAP" Version="3.0.0" />
+    <PackageReference Include="FreeSql.DbContext" Version="1.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.0" />
+    <PackageReference Include="MySqlConnector" Version="0.61.0" />
+  </ItemGroup>
+
+</Project>
