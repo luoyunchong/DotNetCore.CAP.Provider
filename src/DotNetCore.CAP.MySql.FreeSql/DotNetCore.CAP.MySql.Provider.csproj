@@ -2,13 +2,27 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.1</TargetFrameworks>
-    <AssemblyName>DotNetCore.CAP.MySql.FreeSql</AssemblyName>
+    <AssemblyName>DotNetCore.CAP.MySql.Provider</AssemblyName>
     <PackageTags>$(PackageTags);MySQL</PackageTags>
   </PropertyGroup>
 
   <PropertyGroup>
-    <DocumentationFile>bin\$(Configuration)\netstandard2.0\DotNetCore.CAP.MySql.FreeSql.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\netstandard2.0\DotNetCore.CAP.MySql.Provider.xml</DocumentationFile>
     <NoWarn>1701;1702;1705;CS1591</NoWarn>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>0.0.1</Version>
+    <PackageId>DotNetCore.CAP.MySql.Provider</PackageId>
+    <Authors>luoyunchong</Authors>
+    <Company></Company>
+    <Product>luoyunchong</Product>
+    <RootNamespace>DotNetCore.CAP.MySql.Provider</RootNamespace>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageProjectUrl>https://github.com/luoyunchong/DotNetCore.CAP.Provider</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/luoyunchong/DotNetCore.CAP.Provider</RepositoryUrl>
+    <RepositoryType>GitHub</RepositoryType>
+    <PackageReleaseNotes>DotNetCore.CAP.Provider 为CAP增加FreeSql中的统一事务提交</PackageReleaseNotes>
+    <Copyright></Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>

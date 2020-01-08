@@ -13,12 +13,14 @@ namespace Sample.RabbitMQ.MySql
     {
         public IFreeSql Fsql { get; }
         public IConfiguration Configuration { get; }
+
+        private string connectionString = @"Data Source=localhost;Port=3306;User ID=root;Password=123456;Initial Catalog=captest;Charset=utf8mb4;SslMode=none;Max pool size=10";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
 
             Fsql = new FreeSqlBuilder()
-                .UseConnectionString(DataType.MySql, @"Data Source=127.0.0.1;Port=3306;User ID=root;Password=123456;Initial Catalog=captest;Charset=utf8;SslMode=none;Max pool size=10")
+                .UseConnectionString(DataType.MySql, connectionString)
                 .UseAutoSyncStructure(true)
                 .Build();
         }
@@ -29,6 +31,9 @@ namespace Sample.RabbitMQ.MySql
             services.AddCap(x =>
             {
                 x.UseEntityFramework<AppDbContext>();
+
+                //x.UseMySql(connectionString);
+
                 x.UseRabbitMQ("localhost");
                 x.UseDashboard();
                 x.FailedRetryCount = 5;
