@@ -15,6 +15,7 @@ PM> Install-Package DotNetCore.CAP.MySql.Provider
 ```
 PM> Install-Package FreeSql
 PM> Install-Package FreeSql.Provider.MySqlConnector
+PM> Install-Package FreeSql.DbContext
 ```
 ### Configuration
 
