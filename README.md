@@ -112,12 +112,14 @@ public void GetTime(DateTime time)
 
 按照大佬的思路，可以不改变CAP的代码基础上，通过写一个扩展方法。这样我们就可以仅安装官方提供的包。
 
+```
 > Install-Package DotNetCore.CAP.Dashboard
 > Install-Package DotNetCore.CAP.MySql
 > Install-Package DotNetCore.CAP.RabbitMQ
 > Install-Package FreeSql
 > Install-Package FreeSql.DbContext
 > Install-Package FreeSql.Provider.MySqlConnector
+```
 ```
   public static class CapUnitOfWorkExtensions
     {
