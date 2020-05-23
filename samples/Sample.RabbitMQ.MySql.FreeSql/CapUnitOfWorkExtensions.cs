@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Sample.RabbitMQ.MySql.FreeSql
 {
-    public static class CapExtensions
+    public static class CapUnitOfWorkExtensions
     {
         public static ICapTransaction  BeginTransaction(this IUnitOfWork unitOfWork, ICapPublisher publisher, bool autoCommit = false)
         {
