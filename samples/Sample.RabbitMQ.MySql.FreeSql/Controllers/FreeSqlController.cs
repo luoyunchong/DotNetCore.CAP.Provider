@@ -54,7 +54,7 @@ namespace Sample.RabbitMQ.MySql.FreeSql.Controllers
 
                 _capBus.Publish("FreeSqlController.time", now);
 
-                uow.CommitFlush(trans);
+                uow.Commit(trans);
             }
 
             return now;

@@ -20,7 +20,7 @@ namespace Sample.RabbitMQ.MySql.FreeSql
                 ?.Invoke(capTransaction, null);
         }
         
-        public static void CommitFlush(this IUnitOfWork unitOfWork,ICapTransaction capTransaction)
+        public static void Commit(this IUnitOfWork unitOfWork,ICapTransaction capTransaction)
         {
             unitOfWork.Commit();
             capTransaction.Flush();
