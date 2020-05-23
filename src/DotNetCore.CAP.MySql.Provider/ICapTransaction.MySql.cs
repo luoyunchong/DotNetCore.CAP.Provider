@@ -122,14 +122,6 @@ namespace DotNetCore.CAP
             return transaction;
         }
 
-        public static ICapTransaction Begin(this ICapTransaction transaction,
-            IUnitOfWork unitOfWork, bool autoCommit = false)
-        {
-            transaction.DbTransaction = unitOfWork;
-            transaction.AutoCommit = autoCommit;
-
-            return transaction;
-        }
 
         /// <summary>
         /// Start the CAP transaction
@@ -167,11 +159,22 @@ namespace DotNetCore.CAP
             return publisher.Transaction.Value.Begin(dbTransaction, autoCommit);
         }
 
-        public static ICapTransaction BeginTransaction(this IUnitOfWork unitOfWork,
-            ICapPublisher publisher, bool autoCommit = false)
+        
+        public static ICapTransaction Begin(this ICapTransaction transaction,
+            IUnitOfWork unitOfWork, bool autoCommit = false)
+        {
+            transaction.DbTransaction = unitOfWork;
+            transaction.AutoCommit = autoCommit;
+
+            return transaction;
+        }
+        
+        public static ICapTransaction  BeginTransaction(this IUnitOfWork unitOfWork, ICapPublisher publisher, bool autoCommit = false)
         {
             publisher.Transaction.Value = publisher.ServiceProvider.GetService<ICapTransaction>();
             return publisher.Transaction.Value.Begin(unitOfWork, autoCommit);
         }
+
+
     }
 }

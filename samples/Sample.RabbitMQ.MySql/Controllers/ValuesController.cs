@@ -5,18 +5,16 @@ using Dapper;
 using DotNetCore.CAP;
 using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
-using Sample.RabbitMQ.MySql.Models;
 
 namespace Sample.RabbitMQ.MySql.Controllers
 {
     public class ValuesController : Controller
     {
         private readonly ICapPublisher _capBus;
-        private readonly IFreeSql _freeSql;
-        public ValuesController(ICapPublisher capPublisher, IFreeSql freeSql)
+
+        public ValuesController(ICapPublisher capPublisher)
         {
             _capBus = capPublisher;
-            _freeSql = freeSql;
         }
 
         [Route("~/without/transaction")]
@@ -82,41 +80,6 @@ namespace Sample.RabbitMQ.MySql.Controllers
         public void Subscriber2(DateTime p, [FromCap]CapHeader header)
         {
             Console.WriteLine($@"{DateTime.Now} Subscriber invoked, Info: {p}");
-        }
-
-        [HttpGet("~/freesql/transaction")]
-        public DateTime GetTime3()
-        {
-            DateTime now = DateTime.Now;
-            using (var uow = _freeSql.CreateUnitOfWork())
-            {
-                using ICapTransaction trans = uow.BeginTransaction(_capBus, false);
-                var repo = uow.GetRepository<WeatherForecast>();
-
-                repo.Insert(new WeatherForecast()
-                {
-                    Date = now,
-                    Summary = "summary",
-                    TemperatureC = 100
-                });
-
-                repo.Insert(new WeatherForecast()
-                {
-                    Date = now,
-                    Summary = "11222",
-                    TemperatureC = 200
-                });
-                _capBus.Publish("freesql.time", now);
-                trans.Commit();
-            }
-
-            return now;
-        }
-
-        [CapSubscribe("freesql.time")]
-        public void GetTime(DateTime time)
-        {
-            Console.WriteLine($"time:{time}");
         }
     }
 }

@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.RabbitMQ.MySql", "sa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetCore.CAP.MySql.Provider", "src\DotNetCore.CAP.MySql.Provider\DotNetCore.CAP.MySql.Provider.csproj", "{9355184D-813C-4103-99FB-EEECD38C0F1D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.RabbitMQ.MySql.FreeSql", "samples\Sample.RabbitMQ.MySql.FreeSql\Sample.RabbitMQ.MySql.FreeSql.csproj", "{746B9D89-9F94-43C7-949A-2DA94CED0FE1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{9355184D-813C-4103-99FB-EEECD38C0F1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9355184D-813C-4103-99FB-EEECD38C0F1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9355184D-813C-4103-99FB-EEECD38C0F1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{746B9D89-9F94-43C7-949A-2DA94CED0FE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{746B9D89-9F94-43C7-949A-2DA94CED0FE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{746B9D89-9F94-43C7-949A-2DA94CED0FE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{746B9D89-9F94-43C7-949A-2DA94CED0FE1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -32,6 +38,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{45917EEB-75F8-46E0-BB8E-38D428C8175A} = {E94AA563-C2D9-4312-B296-DA6DE6DE13F5}
 		{9355184D-813C-4103-99FB-EEECD38C0F1D} = {33F33892-2C9C-432A-B77C-E09E18E41C1E}
+		{746B9D89-9F94-43C7-949A-2DA94CED0FE1} = {E94AA563-C2D9-4312-B296-DA6DE6DE13F5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9A532480-28D6-4D1A-A85F-EA2EE2DBECD2}
