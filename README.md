@@ -1,8 +1,12 @@
 # DotNetCore.CAP.Provider
-DotNetCore.CAP  为其增加FreeSql中的统一事务提交
+DotNetCore.CAP  为其增加FreeSql中的统一事务提交，没有减少代码，如对EFCore的依赖，如果需要去掉EFCore的依赖，请查看此项目中[https://github.com/luoyunchong/lin-cms-dotnetcore/tree/master/framework](https://github.com/luoyunchong/lin-cms-dotnetcore/tree/master/framework)中src/IGeekfan.CAP.MySql项目源码。
 
-## Getting Started
+该项目分为二种方式实现CAP配合FreeSql的分布式事务一致性。
 
+
+## 1.改源码，为其增加一些扩展，并在switch的地方，加IUnitOfWork的判断。
+
+## Getting Started 
 ### NuGet 
 
 你可以运行以下下命令在你的项目中安装 CAP。
@@ -102,4 +106,80 @@ public void GetTime(DateTime time)
     Console.WriteLine($"time:{time}");
 }
 ```
+
+## 2. 不修改CAP源码怎么办呢?
+另外，如果你不想修改CAP的源码，FreeSql作者叶老板，为我们指一个思路。
+
+按照大佬的思路，可以不改变CAP的代码基础上，通过写一个扩展方法。这样我们就可以仅安装官方提供的包。
+
+> Install-Package DotNetCore.CAP.Dashboard
+> Install-Package DotNetCore.CAP.MySql
+> Install-Package DotNetCore.CAP.RabbitMQ
+> Install-Package FreeSql
+> Install-Package FreeSql.DbContext
+> Install-Package FreeSql.Provider.MySqlConnector
+```
+  public static class CapUnitOfWorkExtensions
+    {
+        public static ICapTransaction  BeginTransaction(this IUnitOfWork unitOfWork, ICapPublisher publisher, bool autoCommit = false)
+        {
+            publisher.Transaction.Value = publisher.ServiceProvider.GetService<ICapTransaction>();
+            return publisher.Transaction.Value.Begin(unitOfWork.GetOrBeginTransaction(), autoCommit);
+        }
+        
+        public static void Flush(this ICapTransaction capTransaction)
+        {
+            capTransaction?.GetType().GetMethod("Flush", BindingFlags.Instance | BindingFlags.NonPublic)
+                ?.Invoke(capTransaction, null);
+        }
+        
+        public static void Commit(this IUnitOfWork unitOfWork,ICapTransaction capTransaction)
+        {
+            unitOfWork.Commit();
+            capTransaction.Flush();
+        }
+    }
+```
+
+
+使用demo,完整项目可查看 https://github.com/luoyunchong/DotNetCore.CAP.Provider/tree/master/samples/Sample.RabbitMQ.MySql.FreeSql
+```
+[HttpGet("~/freesql/flush/{id}")]
+public DateTime Flush(int id = 0)
+{
+    DateTime now = DateTime.Now;
+    using (var uow = _freeSql.CreateUnitOfWork())
+    {
+        //这个不能使用using，因为这个using掉，uow.Dispose()时就会导致FreeSql，提示cannot access dispose transaction
+        ICapTransaction trans = uow.BeginTransaction(_capBus, false);
+        var repo = uow.GetRepository<WeatherForecast>();
+        repo.Insert(new WeatherForecast()
+        {
+            Date = now,
+            Summary = "summary" + (id == 1
+                ? "summarysummarysummarysummarysummarysummarysummarysummarysummarysummarysummary"
+                : ""),
+            TemperatureC = 100
+        });
+
+        if (id == 0)
+        {
+            throw new Exception("异常，事务不正常!!");
+        }
+
+        repo.Insert(new WeatherForecast()
+        {
+            Date = now,
+            Summary = "11222",
+            TemperatureC = 200
+        });
+
+        _capBus.Publish("FreeSqlController.time", now);
+
+        uow.Commit(trans);
+    }
+
+    return now;
+}
+````
 
