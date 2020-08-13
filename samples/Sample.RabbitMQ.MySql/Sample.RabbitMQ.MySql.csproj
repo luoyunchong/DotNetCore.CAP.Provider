@@ -5,18 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DotNetCore.CAP" Version="3.0.3" />
-    <PackageReference Include="DotNetCore.CAP.Dashboard" Version="3.0.3" />
-    <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="3.0.3" />
-    <PackageReference Include="FreeSql" Version="1.5.0-preview0522" />
-    <PackageReference Include="FreeSql.DbContext" Version="1.5.0-preview0522" />
-    <PackageReference Include="FreeSql.Provider.MySqlConnector" Version="1.4.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.0">
+    <PackageReference Include="DotNetCore.CAP" Version="3.1.0-preview-112250362" />
+    <PackageReference Include="DotNetCore.CAP.Dashboard" Version="3.1.0-preview-112250362" />
+    <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="3.1.0-preview-112250362" />
+    <PackageReference Include="FreeSql" Version="1.7.1" />
+    <PackageReference Include="FreeSql.DbContext" Version="1.7.1" />
+    <PackageReference Include="FreeSql.Provider.MySqlConnector" Version="1.7.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.7">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.7" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.0" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.1.0" />
   </ItemGroup>

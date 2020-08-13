@@ -15,7 +15,7 @@ using DotNetCore.CAP.Serialization;
 using FreeSql;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Options;
-using MySql.Data.MySqlClient;
+using MySqlConnector;
 
 namespace DotNetCore.CAP.MySql
 {

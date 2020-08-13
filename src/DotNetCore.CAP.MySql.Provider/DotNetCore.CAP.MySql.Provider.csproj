@@ -10,7 +10,7 @@
     <DocumentationFile>bin\Debug\netstandard2.0\DotNetCore.CAP.MySql.Provider.xml</DocumentationFile>
     <NoWarn>1701;1702;1705;CS1591</NoWarn>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>0.0.1</Version>
+    <Version>0.0.2</Version>
     <PackageId>DotNetCore.CAP.MySql.Provider</PackageId>
     <Authors>luoyunchong</Authors>
     <Company></Company>
@@ -26,12 +26,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapper" Version="2.0.30" />
-    <PackageReference Include="DotNetCore.CAP" Version="3.0.0" />
-    <PackageReference Include="FreeSql.DbContext" Version="1.5.0-preview0522" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.0" />
-    <PackageReference Include="MySqlConnector" Version="0.61.0" />
+    <PackageReference Include="Dapper" Version="2.0.35" />
+    <PackageReference Include="DotNetCore.CAP" Version="3.1.0-preview-112250362" />
+    <PackageReference Include="FreeSql.DbContext" Version="1.7.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.7" />
+    <PackageReference Include="MySqlConnector" Version="1.0.1" />
   </ItemGroup>
 
 </Project>

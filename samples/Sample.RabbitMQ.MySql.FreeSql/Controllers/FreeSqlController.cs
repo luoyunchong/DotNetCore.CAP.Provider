@@ -1,6 +1,11 @@
 ﻿using System;
+using System.Data;
+using System.Threading.Tasks;
+using Dapper;
 using DotNetCore.CAP;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using MySqlConnector;
 using Sample.RabbitMQ.MySql.FreeSql.Models;
 
 namespace Sample.RabbitMQ.MySql.FreeSql.Controllers
@@ -9,13 +14,41 @@ namespace Sample.RabbitMQ.MySql.FreeSql.Controllers
     {
         private readonly ICapPublisher _capBus;
         private readonly IFreeSql _freeSql;
-
-        public FreeSqlController(ICapPublisher capPublisher, IFreeSql freeSql)
+        private readonly IConfiguration configuration;
+        public FreeSqlController(ICapPublisher capPublisher, IFreeSql freeSql, IConfiguration configuration)
         {
             _capBus = capPublisher;
             _freeSql = freeSql;
+            this.configuration = configuration;
         }
 
+        [Route("~/without/transaction")]
+        public async Task<IActionResult> WithoutTransaction()
+        {
+            await _capBus.PublishAsync("sample.rabbitmq.mysql", new WeatherForecast());
+
+            return Ok();
+        }
+
+        [Route("~/adonet/transaction")]
+        public IActionResult AdonetWithTransaction()
+        {
+            using (var connection = new MySqlConnection(configuration.GetSection("ConnectString:MySql").Value))
+            {
+                using (var transaction = connection.BeginTransaction(_capBus, true))
+                {
+                    //your business code
+                    connection.Execute("insert into test(name) values('test')", transaction: (IDbTransaction)transaction.DbTransaction);
+
+                    //for (int i = 0; i < 5; i++)
+                    //{
+                    _capBus.Publish("sample.rabbitmq.mysql", DateTime.Now);
+                    //}
+                }
+            }
+
+            return Ok();
+        }
 
         /// <summary>
         /// freesql，配合DotNetCore.CAP.MySql+ CapUnitOfWorkExtenssions中的扩展方法
@@ -34,9 +67,7 @@ namespace Sample.RabbitMQ.MySql.FreeSql.Controllers
                 repo.Insert(new WeatherForecast()
                 {
                     Date = now,
-                    Summary = "summary" + (id == 1
-                        ? "summarysummarysummarysummarysummarysummarysummarysummarysummarysummarysummary"
-                        : ""),
+                    Summary = "summary" + (id == 1? "summarysummarysummarysummarysummarysummarysummarysummarysummarysummarysummary" : ""),
                     TemperatureC = 100
                 });
 
@@ -60,11 +91,19 @@ namespace Sample.RabbitMQ.MySql.FreeSql.Controllers
             return now;
         }
 
-
+        
+        [NonAction]
         [CapSubscribe("FreeSqlController.time")]
         public void GetTime(DateTime time)
         {
             Console.WriteLine($"time:{time}");
+        }
+
+        [NonAction]
+        [CapSubscribe("sample.rabbitmq.mysql")]
+        public void Subscriber(DateTime p)
+        {
+            Console.WriteLine($@"{DateTime.Now} Subscriber invoked, Info: {p}");
         }
     }
 }

@@ -14,10 +14,11 @@ namespace Sample.RabbitMQ.MySql.FreeSql
         public IFreeSql Fsql { get; }
         public IConfiguration Configuration { get; }
 
-        private string connectionString = @"Data Source=localhost;Port=3306;User ID=root;Password=123456;Initial Catalog=captest;Charset=utf8mb4;SslMode=none;Max pool size=10";
+        private string connectionString;
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            connectionString = configuration.GetSection("ConnectString:MySql").Value;
 
             Fsql = new FreeSqlBuilder()
                 .UseConnectionString(DataType.MySql, connectionString)
@@ -26,19 +27,31 @@ namespace Sample.RabbitMQ.MySql.FreeSql
         }
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IFreeSql>(Fsql);
+            services.AddSingleton(Fsql);
             services.AddCap(x =>
             {
 
                 x.UseMySql(connectionString);
 
-                x.UseRabbitMQ("localhost");
+                x.UseRabbitMQ(o =>
+                {
+                    o.HostName = "localhost";
+                    o.UserName = "guest";
+                    o.Password = "guest";
+                    o.VirtualHost = "/";
+                    o.ExchangeName = "cap.cms.topic";
+
+                    o.ConnectionFactoryOptions = opt =>
+                    {
+                        //rabbitmq client ConnectionFactory config
+                    };
+                });
                 x.UseDashboard();
                 x.FailedRetryCount = 5;
-                x.FailedThresholdCallback = (type, msg) =>
+                x.FailedThresholdCallback = (type) =>
                 {
                     Console.WriteLine(
-                        $@"A message of type {type} failed after executing {x.FailedRetryCount} several times, requiring manual troubleshooting. Message name: {msg.GetName()}");
+                        $@"A message of type {type} failed after executing {x.FailedRetryCount} several times, requiring manual troubleshooting. Message name: {type.Message.GetName()}");
                 };
             });
 
