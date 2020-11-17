@@ -1,8 +1,7 @@
 # DotNetCore.CAP.Provider
-DotNetCore.CAP  为其增加FreeSql中的统一事务提交，没有减少代码，如对EFCore的依赖，如果需要去掉EFCore的依赖，请查看此项目中[https://github.com/luoyunchong/lin-cms-dotnetcore/tree/master/framework](https://github.com/luoyunchong/lin-cms-dotnetcore/tree/master/framework)中src/IGeekfan.CAP.MySql项目源码。
+DotNetCore.CAP  为其增加FreeSql中的统一事务提交，没有减少代码，如对EFCore的依赖，如果需要去掉EFCore的依赖。
 
 该项目分为二种方式实现CAP配合FreeSql的分布式事务一致性。
-
 
 ## 1.改源码，为其增加一些扩展，并在switch的地方，加IUnitOfWork的判断。
 
