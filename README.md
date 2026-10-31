@@ -5,6 +5,8 @@ This project adds coordinated FreeSql transaction commits to DotNetCore.CAP. The
 
 The project demonstrates two approaches for distributed transaction consistency between CAP and FreeSql.
 
+<a name="1改源码为其增加一些扩展并在switch的地方加iunitofwork的判断"></a>
+
 ## 1. Extend the CAP source and check for IUnitOfWork in the switch
 
 ## Getting Started 
@@ -107,6 +109,8 @@ public void GetTime(DateTime time)
     Console.WriteLine($"time:{time}");
 }
 ```
+
+<a name="2-不修改cap源码怎么办呢"></a>
 
 ## 2. Use CAP without changing its source
 If you do not want to modify CAP's source, the FreeSql author suggested another approach.
