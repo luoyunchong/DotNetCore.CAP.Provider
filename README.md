@@ -1,22 +1,22 @@
-[English](README.en.md) | **简体中文**
+**English** | [简体中文](README.zh-CN.md)
 
 # DotNetCore.CAP.Provider
-DotNetCore.CAP  为其增加FreeSql中的统一事务提交，没有减少代码，如对EFCore的依赖，如果需要去掉EFCore的依赖。
+This project adds coordinated FreeSql transaction commits to DotNetCore.CAP. The original notes that this approach does not remove code or dependencies such as EF Core.
 
-该项目分为二种方式实现CAP配合FreeSql的分布式事务一致性。
+The project demonstrates two approaches for distributed transaction consistency between CAP and FreeSql.
 
-## 1.改源码，为其增加一些扩展，并在switch的地方，加IUnitOfWork的判断。
+## 1. Extend the CAP source and check for IUnitOfWork in the switch
 
 ## Getting Started 
 ### NuGet 
 
-你可以运行以下下命令在你的项目中安装 CAP。
+Install CAP in your project:
 
 ```
 PM> Install-Package DotNetCore.CAP.MySql.Provider
 ```
 
-安装FreeSql
+Install FreeSql
 ```
 PM> Install-Package FreeSql
 PM> Install-Package FreeSql.Provider.MySqlConnector
@@ -24,12 +24,12 @@ PM> Install-Package FreeSql.DbContext
 ```
 ### Configuration
 
-首先配置CAP到 Startup.cs 文件中，如下：
+First, configure CAP in Startup.cs:
 
 ```c#
     public IFreeSql Fsql { get; }
     public IConfiguration Configuration { get; }
-    private string connectionString = @"Data Source=localhost;Port=3306;User ID=root;Password=123456;Initial Catalog=captest;Charset=utf8mb4;SslMode=none;Max pool size=10";
+    private string connectionString = @"Data Source=localhost;Port=3306;User ID=root;Password=<YOUR_DEV_SECRET>;Initial Catalog=captest;Charset=utf8mb4;SslMode=none;Max pool size=10";
     
     public Startup(IConfiguration configuration)
     {
@@ -62,7 +62,7 @@ PM> Install-Package FreeSql.DbContext
 ```
 
 
-在控制器中得到
+Use it in a controller:
 ```
 private readonly IFreeSql _freeSql;
 private readonly ICapPublisher _capBus;
@@ -108,10 +108,10 @@ public void GetTime(DateTime time)
 }
 ```
 
-## 2. 不修改CAP源码怎么办呢?
-另外，如果你不想修改CAP的源码，FreeSql作者叶老板，为我们指一个思路。
+## 2. Use CAP without changing its source
+If you do not want to modify CAP's source, the FreeSql author suggested another approach.
 
-按照大佬的思路，可以不改变CAP的代码基础上，通过写一个扩展方法。这样我们就可以仅安装官方提供的包。
+Implement an extension method without changing CAP, using only the official packages:
 
 ```
 > Install-Package DotNetCore.CAP.Dashboard
@@ -145,7 +145,7 @@ public void GetTime(DateTime time)
 ```
 
 
-使用demo,完整项目可查看 https://github.com/luoyunchong/DotNetCore.CAP.Provider/tree/master/samples/Sample.RabbitMQ.MySql.FreeSql
+Usage example; see the complete project at https://github.com/luoyunchong/DotNetCore.CAP.Provider/tree/master/samples/Sample.RabbitMQ.MySql.FreeSql
 ```
 [HttpGet("~/freesql/flush/{id}")]
 public DateTime Flush(int id = 0)
@@ -153,7 +153,7 @@ public DateTime Flush(int id = 0)
     DateTime now = DateTime.Now;
     using (var uow = _freeSql.CreateUnitOfWork())
     {
-        //这个不能使用using，因为这个using掉，uow.Dispose()时就会导致FreeSql，提示cannot access dispose transaction
+        //Do not use using here: disposing this transaction before uow.Dispose() causes FreeSql to report that the transaction has already been disposed.
         ICapTransaction trans = uow.BeginTransaction(_capBus, false);
         var repo = uow.GetRepository<WeatherForecast>();
         repo.Insert(new WeatherForecast()
