@@ -1,3 +1,5 @@
+[English](README.en.md) | **简体中文**
+
 # DotNetCore.CAP.Provider
 DotNetCore.CAP  为其增加FreeSql中的统一事务提交，没有减少代码，如对EFCore的依赖，如果需要去掉EFCore的依赖。
 
